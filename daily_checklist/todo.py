@@ -5,6 +5,7 @@ from werkzeug.exceptions import abort
 
 from daily_checklist.auth import login_required
 from daily_checklist.db import get_db
+from datetime import datetime
 
 bp = Blueprint('todo', __name__)
 
@@ -15,8 +16,18 @@ def index():
   todos = db.execute(
     'SELECT i.id, status, note, due_date, done, user_id'
     ' FROM item i JOIN user u ON i.user_id = u.id ').fetchall()
-    # TODO: where due date is today
   return render_template('todo/index.html', todos = todos)
+
+@bp.route('/today')
+@login_required
+def show_today():
+  db = get_db()
+  todos = db.execute(
+    ' SELECT i.id, status, note, due_date, done, user_id'
+    ' FROM item i JOIN user u ON i.user_id = u.id '
+    ' WHERE i.due_date IS (?)', (datetime.today().strftime('%Y-%m-%d'),)
+  ).fetchall()
+  return render_template('todo/today.html', todos = todos)
 
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
