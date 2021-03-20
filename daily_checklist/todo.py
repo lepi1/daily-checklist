@@ -3,8 +3,8 @@ from flask import (Blueprint, flash, g, redirect, request, render_template,
 
 from werkzeug.exceptions import abort
 
-from flaskr.auth import login_required
-from flaskr.db import get_db
+from daily_checklist.auth import login_required
+from daily_checklist.db import get_db
 
 bp = Blueprint('todo', __name__)
 

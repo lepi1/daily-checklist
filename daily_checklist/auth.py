@@ -5,7 +5,7 @@ from flask import (Blueprint, flash, g, redirect, request, render_template,
 
 from werkzeug.security import check_password_hash, generate_password_hash
 
-from flaskr.db import get_db
+from daily_checklist.db import get_db
 bp = Blueprint('auth', __name__, url_prefix='/auth')
 
 @bp.route('/register', methods=('GET', 'POST'))
