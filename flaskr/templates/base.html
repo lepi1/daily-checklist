@@ -11,14 +11,14 @@
     {% endblock %}
     <title>{% block title %}Daily checklist{% endblock %}</title>
     {% for message in get_flashed_messages() %}
-    <div class="alert alert-secondary">{{ message }}</div>
+    <div class="alert alert-warning">{{ message }}</div>
     {% endfor %}
 
     {% endblock %}
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top" id="nav1">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" id="nav1">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav">
         <span class="navbar-toggler-icon">
       </button>
@@ -26,8 +26,10 @@
       <div class="collapse navbar-collapse" id="mainNav">
         <div class="navbar-nav">
           {% if g.user %}
-          <span>{{ g.user['username'] }}</span>
-          <a href="{{ url_for('auth.logout') }}">Log Out</a>
+
+          <a class="nav-link disabled" href="#"><span>{{ g.user['username'] }}</span></a>
+
+          <a href="{{ url_for('auth.logout') }}" class="nav-item nav-link">Log Out</a>
           {% else %}
           <a href="{{ url_for('auth.register') }}" class="nav-item nav-link">Register</a>
           <a href="{{ url_for('auth.login') }}" class="nav-item nav-link">Log In</a>
