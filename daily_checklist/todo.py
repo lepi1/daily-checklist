@@ -5,6 +5,7 @@ from werkzeug.exceptions import abort
 
 from daily_checklist.auth import login_required
 from daily_checklist.db import get_db
+from datetime import datetime
 
 bp = Blueprint('todo', __name__)
 
@@ -13,10 +14,20 @@ bp = Blueprint('todo', __name__)
 def index():
   db = get_db()
   todos = db.execute(
-    'SELECT i.id, status, note, due_date, done, user_id'
+    'SELECT i.id, note, due_date, done, user_id'
     ' FROM item i JOIN user u ON i.user_id = u.id ').fetchall()
-    # TODO: where due date is today
   return render_template('todo/index.html', todos = todos)
+
+@bp.route('/today')
+@login_required
+def show_today():
+  db = get_db()
+  todos = db.execute(
+    ' SELECT i.id, note, due_date, done, user_id'
+    ' FROM item i JOIN user u ON i.user_id = u.id '
+    ' WHERE i.due_date IS (?)', (datetime.today().strftime('%Y-%m-%d'),)
+  ).fetchall()
+  return render_template('todo/today.html', todos = todos)
 
 @bp.route('/create', methods=('GET', 'POST'))
 @login_required
@@ -37,8 +48,8 @@ def create():
     else:
       db = get_db()
       db.execute(
-        'INSERT INTO item (note, status, due_date, user_id)'
-        ' VALUES (?, ?, ?, ?)', (note, 'not_done', due_date, g.user['id'])
+        'INSERT INTO item (note, due_date, user_id)'
+        ' VALUES (?, ?, ?, ?)', (note, due_date, g.user['id'])
       )
       db.commit()
       return redirect(url_for('todo.index'))

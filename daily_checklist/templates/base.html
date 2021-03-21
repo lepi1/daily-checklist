@@ -29,6 +29,10 @@
 
           <a class="nav-link disabled" href="#"><span>{{ g.user['username'] }}</span></a>
 
+          <a href="{{ url_for('todo.index') }}" class="nav-item nav-link">All tasks</a>
+
+          <a href="{{ url_for('todo.show_today') }}" class="nav-item nav-link">Tasks for today</a>
+          <a href="{{ url_for('reports.show_report') }}" class="nav-item nav-link">Reports</a>
           <a href="{{ url_for('auth.logout') }}" class="nav-item nav-link">Log Out</a>
           {% else %}
           <a href="{{ url_for('auth.register') }}" class="nav-item nav-link">Register</a>
