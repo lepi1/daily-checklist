@@ -1,0 +1,4 @@
+include daily_checklist/schema.sql
+graft daily_checklist/static
+graft daily_checklist/templates
+global-exclude *.pyc
