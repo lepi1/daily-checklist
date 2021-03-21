@@ -12,8 +12,11 @@ bp = Blueprint('reports', __name__)
 @login_required
 def show_report():
   db = get_db()
-  todos = db.execute(
-    'SELECT i.id, status, note, due_date, done, user_id'
-    ' FROM item i JOIN user u ON i.user_id = u.id ').fetchall()
-    # TODO: group by due date
-  return render_template('todo/index.html', todos = todos)
+  dates = db.execute(
+    ' SELECT i.due_date, COUNT(*) count_all, SUM(CASE WHEN done==1 THEN 1 ELSE 0 end) count_done,  '
+    ' (1.0 * SUM(CASE WHEN done==1 THEN 1 ELSE 0 end) / COUNT(*)) * 100 AS percentage '
+    ' FROM item i JOIN user u ON i.user_id = u.id '
+    ' GROUP BY due_date '
+    ' ORDER BY due_date DESC'
+    ).fetchall()
+  return render_template('reports/list.html', dates = dates)

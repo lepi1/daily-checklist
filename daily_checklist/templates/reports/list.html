@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block header %}
+  <h1>{% block title %}List of dates{% endblock %}</h1>
+{% endblock %}
+
+{% block content %}
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">Date</th>
+      <th scope="col">Count of all tasks</th>
+      <th scope="col">Count of done tasks</th>
+      <th scope="col" colspan="2">Percentage</th>
+    </tr>
+  </thead>
+  {% for date in dates %}
+  <tr>
+    <td>{{ date['due_date'] }}</td>
+    <td>{{ date['count_all'] }}</td>
+    <td>{{ date['count_done'] }}</td>
+    <td>{{ date['percentage'] }} %
+      {% if not loop.last and date['percentage'] > loop.nextitem['percentage']  %}
+      <td>🔼</td>
+      {% else %}
+      <td>🔽</td>
+      {% endif %}
+    </td>
+  </tr>
+
+  {% endfor %}
+
+</table>
+{% endblock %}

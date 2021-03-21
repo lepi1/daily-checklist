@@ -14,7 +14,7 @@ bp = Blueprint('todo', __name__)
 def index():
   db = get_db()
   todos = db.execute(
-    'SELECT i.id, status, note, due_date, done, user_id'
+    'SELECT i.id, note, due_date, done, user_id'
     ' FROM item i JOIN user u ON i.user_id = u.id ').fetchall()
   return render_template('todo/index.html', todos = todos)
 
@@ -23,7 +23,7 @@ def index():
 def show_today():
   db = get_db()
   todos = db.execute(
-    ' SELECT i.id, status, note, due_date, done, user_id'
+    ' SELECT i.id, note, due_date, done, user_id'
     ' FROM item i JOIN user u ON i.user_id = u.id '
     ' WHERE i.due_date IS (?)', (datetime.today().strftime('%Y-%m-%d'),)
   ).fetchall()
@@ -48,8 +48,8 @@ def create():
     else:
       db = get_db()
       db.execute(
-        'INSERT INTO item (note, status, due_date, user_id)'
-        ' VALUES (?, ?, ?, ?)', (note, 'not_done', due_date, g.user['id'])
+        'INSERT INTO item (note, due_date, user_id)'
+        ' VALUES (?, ?, ?, ?)', (note, due_date, g.user['id'])
       )
       db.commit()
       return redirect(url_for('todo.index'))

@@ -14,6 +14,5 @@ CREATE TABLE item (
   note TEXT NOT NULL,
   due_date TEXT NOT NULL,
   done INTEGER DEFAULT 0,
-  status TEXT NOT NULL,
   FOREIGN KEY (user_id) REFERENCES user (id)
 );
