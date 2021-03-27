@@ -22,4 +22,4 @@ jobs:
             pip install -e .
       - run:
           command: |
-            pytest
+            python -m pytest
