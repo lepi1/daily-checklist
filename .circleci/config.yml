@@ -22,4 +22,5 @@ jobs:
             pip install -e .
       - run:
           command: |
+            . venv/bin/activate
             python -m pytest
