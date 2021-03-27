@@ -9,6 +9,7 @@ setup(
   install_requires=[
     'Flask >= 1.1.0',
     'wheel',
-    'bootstrap-flask'
+    'bootstrap-flask',
+    'pytest'
   ],
 )
