@@ -6,20 +6,6 @@ import pytest
 import daily_checklist
 from daily_checklist import db
 
-@pytest.fixture
-def client():
-    app = daily_checklist.create_app()
-    db_fd, app.config['DATABASE'] = tempfile.mkstemp()
-    app.config['TESTING'] = True
-
-    with daily_checklist.create_app().test_client() as client:
-        with app.app_context():
-            db.init_db()
-        yield client
-
-    os.close(db_fd)
-    os.unlink(app.config['DATABASE'])
-
 def login(client, username, password):
     return client.post('/login', data=dict(
         username=username,
