@@ -28,7 +28,9 @@ source venv/bin/activate
 ```
 python setup.py install
 ```
-
+```
+FLASK_APP=daily_checklist FLASK_ENV=development flask init-db
+```
 ```
 FLASK_APP=daily_checklist FLASK_ENV=development flask run
 ```

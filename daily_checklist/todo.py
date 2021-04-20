@@ -49,7 +49,7 @@ def create():
       db = get_db()
       db.execute(
         'INSERT INTO item (note, due_date, user_id)'
-        ' VALUES (?, ?, ?, ?)', (note, due_date, g.user['id'])
+        ' VALUES (?, ?, ?)', (note, due_date, g.user['id'])
       )
       db.commit()
       return redirect(url_for('todo.index'))
