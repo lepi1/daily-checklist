@@ -1,5 +1,5 @@
-from flask import (Blueprint, flash, g, redirect, request, render_template,
-  session, url_for)
+from flask import (Blueprint, flash, g, json, redirect, request, render_template,
+  session, url_for, jsonify)
 
 from werkzeug.exceptions import abort
 
@@ -20,3 +20,14 @@ def show_report():
     ' ORDER BY due_date DESC'
     ).fetchall()
   return render_template('reports/list.html', dates = dates)
+
+@bp.route('/chart_data')
+@login_required
+def apex_charts_data():
+  db = get_db()
+  data = db.execute(
+    ' SELECT i.due_date, (1.0 * SUM(CASE WHEN done==1 THEN 1 ELSE 0 end) / COUNT(*)) * 100 percentage '
+    ' FROM item i JOIN user u ON i.user_id = u.id GROUP BY due_date '
+  ).fetchall()
+
+  return jsonify(dict(data))
