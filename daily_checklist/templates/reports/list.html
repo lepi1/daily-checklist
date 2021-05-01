@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}List of dates{% endblock %}</h1>
+  <h1>{% block title %}Reports{% endblock %}</h1>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 {% endblock %}
 
 {% block content %}
@@ -36,23 +37,39 @@
 
 </div>
 
-
+<!-- Javascript -->
 <script>
-  var options = {
-    chart: {
-      type: 'bar'
-    },
-    series: [{
-      name: 'sales',
-      data: [30,40,45,50,49,60,70,91,125]
-    }],
-    xaxis: {
-      categories: [1991,1992,1993,1994,1995,1996,1997, 1998,1999]
+  axios.get('/chart_data')
+  .then(function (response) {
+    console.log(response);
+    data = response.data
+
+    var options = {
+      chart: {
+        type: 'bar'
+      },
+      series: [{
+        name: 'Finished tasks in percent',
+        data: Object.values(data)
+      }],
+      xaxis: {
+        categories: Object.keys(data)
+      },
+      dataLabels: {
+        enabled: true,
+        formatter: function (value) {
+          return value + "%"
+        }
+      }
     }
-  }
 
-  var chart = new ApexCharts(document.querySelector("#chart"), options);
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
 
-  chart.render();
+    chart.render();
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
 </script>
 {% endblock %}
