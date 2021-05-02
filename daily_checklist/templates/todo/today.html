@@ -2,6 +2,8 @@
 
 {% block header %}
   <h1>{% block title %}TODOs for today{% endblock %}</h1>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   {% if g.user %}
     <a class="btn btn-info" href="{{ url_for('todo.create') }}">New</a>
   {% endif %}
@@ -52,4 +54,34 @@
   {% endfor %}
 
 </table>
+<div id="chart">
+
+</div>
+
+<!-- Javascript -->
+<script>
+  axios.get('/daily_progress_chart')
+  .then(function (response) {
+    data = response.data
+
+    var options = {
+      chart: {
+          height: 350,
+          type: 'radialBar',
+      },
+      series: [Object.values(data)],
+      labels: ['Progress'],
+    }
+
+    var chart = new ApexCharts(document.querySelector("#chart"), options);
+
+    chart.render();
+
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+</script>
+
 {% endblock %}

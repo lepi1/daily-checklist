@@ -5,6 +5,7 @@ from werkzeug.exceptions import abort
 
 from daily_checklist.auth import login_required
 from daily_checklist.db import get_db
+from datetime import date
 
 bp = Blueprint('reports', __name__)
 
@@ -29,5 +30,17 @@ def apex_charts_data():
     ' SELECT i.due_date, (1.0 * SUM(CASE WHEN done==1 THEN 1 ELSE 0 end) / COUNT(*)) * 100 percentage '
     ' FROM item i JOIN user u ON i.user_id = u.id GROUP BY due_date '
   ).fetchall()
+
+  return jsonify(dict(data))
+
+@bp.route('/daily_progress_chart')
+@login_required
+def apex_charts_daily_data():
+  db = get_db()
+  today = date.today().strftime("%Y-%m-%d")
+  data = db.execute(
+    ' SELECT (1.0 * SUM(CASE WHEN done==1 THEN 1 ELSE 0 end) / COUNT(*)) * 100 percentage '
+    ' FROM item i JOIN user u ON i.user_id = u.id WHERE i.due_date = (?) ', (today,)
+  ).fetchone()
 
   return jsonify(dict(data))
