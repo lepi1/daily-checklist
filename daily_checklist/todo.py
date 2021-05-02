@@ -15,7 +15,7 @@ def index():
   db = get_db()
   todos = db.execute(
     'SELECT i.id, note, due_date, done, user_id'
-    ' FROM item i JOIN user u ON i.user_id = u.id ').fetchall()
+    ' FROM item i JOIN user u ON i.user_id = u.id WHERE user_id = (?)', (g.user['id'],)).fetchall()
   return render_template('todo/index.html', todos = todos)
 
 @bp.route('/today')
@@ -25,7 +25,7 @@ def show_today():
   todos = db.execute(
     ' SELECT i.id, note, due_date, done, user_id'
     ' FROM item i JOIN user u ON i.user_id = u.id '
-    ' WHERE i.due_date IS (?)', (datetime.today().strftime('%Y-%m-%d'),)
+    ' WHERE i.due_date IS (?) AND user_id = (?)', (datetime.today().strftime('%Y-%m-%d'), g.user['id'])
   ).fetchall()
   return render_template('todo/today.html', todos = todos)
 

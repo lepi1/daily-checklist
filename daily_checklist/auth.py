@@ -62,6 +62,43 @@ def login():
 
   return render_template('auth/login.html')
 
+@bp.route('/edit-user', methods=('GET', 'POST'))
+def edit_user():
+  if request.method == 'POST':
+    user_id = session['user_id']
+    password = request.form['password']
+    db = get_db()
+    error = None
+
+    if not password:
+      error = 'Password is required!'
+
+    if error is None:
+      db.execute(
+        'UPDATE user SET password = (?) WHERE id = (?)',
+        (generate_password_hash(password), user_id)
+      )
+      db.commit()
+      return redirect(url_for('todo.index'))
+
+    flash(error)
+
+  return render_template('auth/edit_user.html')
+
+@bp.route('/delete-user', methods=['POST'])
+def delete_user():
+  user_id = session['user_id']
+  db = get_db()
+
+  db.execute(
+    'DELETE FROM user WHERE id = (?)',
+      (user_id, )
+    )
+  db.commit()
+  session.clear()
+
+  return redirect(url_for('auth.register'))
+
 @bp.before_app_request
 def load_logged_in_user():
   user_id = session.get('user_id')
