@@ -19,29 +19,50 @@
   </head>
 
   <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light sticky-top" id="nav1">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#mainNav">
-        <span class="navbar-toggler-icon">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+      <a class="navbar-brand" href="#">Daily checklist</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
       </button>
 
-      <div class="collapse navbar-collapse" id="mainNav">
-        <div class="navbar-nav">
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
           {% if g.user %}
 
-          <a class="nav-link disabled" href="#"><span>{{ g.user['username'] }}</span></a>
+          <li class="nav-item active">
+            <a class="nav-link" href="{{ url_for('todo.index') }}">All tasks<span class="sr-only">(current)</a>
+          </li>
 
-          <a href="{{ url_for('todo.index') }}" class="nav-item nav-link">All tasks</a>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('todo.show_today') }}">Tasks for today</a>
+          </li>
 
-          <a href="{{ url_for('todo.show_today') }}" class="nav-item nav-link">Tasks for today</a>
-          <a href="{{ url_for('reports.show_report') }}" class="nav-item nav-link">Reports</a>
-          <a href="{{ url_for('auth.logout') }}" class="nav-item nav-link">Log Out</a>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('reports.show_report') }}">Reports</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.logout') }}">Log Out</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link disabled" href="#">User: <span>{{ g.user['username'] }}</span></a>
+          </li>
+
           {% else %}
-          <a href="{{ url_for('auth.register') }}" class="nav-item nav-link">Register</a>
-          <a href="{{ url_for('auth.login') }}" class="nav-item nav-link">Log In</a>
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.register') }}">Register</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ url_for('auth.login') }}">Log In</a>
+          </li>
           {% endif %}
-        </div>
+        </ul>
       </div>
     </nav>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-Piv4xVNRyMGpqkS2by6br4gNJ7DXjqk09RmUpJ8jgGtD7zP9yug3goQfGII0yAns" crossorigin="anonymous"></script>
   </body>
 
 <section class="content">
