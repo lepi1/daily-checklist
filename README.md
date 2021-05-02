@@ -1,4 +1,4 @@
-# daily-checklist [WIP]
+# daily-checklist
 
 [![lepi1](https://circleci.com/gh/lepi1/daily-checklist.svg?style=svg)](https://circleci.com/gh/lepi1/daily-checklist/)
 
