@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}All TODOs{% endblock %}</h1>
+  <h1>{% block title %}All tasks{% endblock %}</h1>
   {% if g.user %}
     <a class="btn btn-info" href="{{ url_for('todo.create') }}">New</a>
   {% endif %}
@@ -11,20 +11,16 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
       <th scope="col">Note</th>
       <th scope="col">Due date</th>
-      <th scope="col">User id</th>
       <th scope="col">Done?</th>
       <th scope="col" colspan="3">Action</th>
     </tr>
   </thead>
   {% for todo in todos %}
   <tr>
-    <th scope="row">{{ todo['id'] }}</th>
-    <td>{{ todo['note'] }}</td>
+    <td><b>{{ todo['note'] }}</b></td>
     <td>{{ todo['due_date'] }}</td>
-    <td>{{ todo['user_id'] }}</td>
     {% if todo['done'] == 1 %}
       <td>✅</td>
     {% else %}

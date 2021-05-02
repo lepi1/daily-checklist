@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block header %}
-  <h1>{% block title %}TODOs for today{% endblock %}</h1>
+  <h1>{% block title %}Tasks for today{% endblock %}</h1>
   <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
   {% if g.user %}
@@ -13,20 +13,16 @@
 <table class="table">
   <thead>
     <tr>
-      <th scope="col">#</th>
       <th scope="col">Note</th>
       <th scope="col">Due date</th>
-      <th scope="col">User id</th>
       <th scope="col">Done?</th>
       <th scope="col" colspan="3">Action</th>
     </tr>
   </thead>
   {% for todo in todos %}
   <tr>
-    <th scope="row">{{ todo['id'] }}</th>
-    <td>{{ todo['note'] }}</td>
+    <td><b>{{ todo['note'] }}</b></td>
     <td>{{ todo['due_date'] }}</td>
-    <td>{{ todo['user_id'] }}</td>
     {% if todo['done'] == 1 %}
       <td>✅</td>
     {% else %}
